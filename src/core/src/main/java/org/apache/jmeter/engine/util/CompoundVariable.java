@@ -136,7 +136,10 @@ public class CompoundVariable implements Function {
         for (Object item : compiledComponents) {
             if (item instanceof Function) {
                 try {
-                    results.append(((Function) item).execute(previousResult, currentSampler));
+                    Object ret = ((Function) item).execute(previousResult, currentSampler);
+                    if(ret != null){
+                        results.append();
+                    }
                 } catch (InvalidVariableException e) {
                     // TODO should level be more than debug ?
                     log.debug("Invalid variable: {}", item, e);
@@ -150,7 +153,10 @@ public class CompoundVariable implements Function {
         if (!isDynamic) {
             permanentResults = results.toString();
         }
-        return results.toString();
+         if (results.length()>0){
+             return results.toString();
+         }
+        return null;
     }
 
     @SuppressWarnings("unchecked") // clone will produce correct type
